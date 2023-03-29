@@ -4,8 +4,7 @@ import {
   signupHandler,
 } from "../controllers/auth.controller.js";
 import {
-  checkExistingRole,
-  checkExistingUser,
+  checkExistingUser
 } from "../middlewares/verifySignup.js";
 
 const router = Router();
@@ -18,7 +17,7 @@ router.use((req, res, next) => {
   next();
 });
 
-router.post("/signup", [checkExistingUser, checkExistingRole], signupHandler);
+router.post("/signup", [checkExistingUser], signupHandler);
 
 router.post("/signin", signinHandler);
 

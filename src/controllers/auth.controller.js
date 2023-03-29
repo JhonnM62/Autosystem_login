@@ -1,11 +1,10 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
-import Role from "../models/Role.js";
 import { SECRET } from "../config.js";
 
 export const signupHandler = async (req, res) => {
   try {
-    const { username, email, password, roles } = req.body;
+    const { username, email, password} = req.body;
 
     // Creating a new User Object
     const newUser = new User({
@@ -13,15 +12,6 @@ export const signupHandler = async (req, res) => {
       email,
       password,
     });
-
-    // checking for roles
-    if (roles) {
-      const foundRoles = await Role.find({ name: { $in: roles } });
-      newUser.roles = foundRoles.map((role) => role._id);
-    } else {
-      const role = await Role.findOne({ name: "user" });
-      newUser.roles = [role._id];
-    }
 
     // Saving the User Object in Mongodb
     const savedUser = await newUser.save();
@@ -39,10 +29,6 @@ export const signupHandler = async (req, res) => {
 
 export const signinHandler = async (req, res) => {
   try {
-    // Request body email can be an email or username
-    const userFound = await User.findOne({ email: req.body.email }).populate(
-      "roles"
-    );
 
     if (!userFound) return res.status(400).json({ message: "User Not Found" });
 

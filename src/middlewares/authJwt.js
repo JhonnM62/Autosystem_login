@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { SECRET } from "../config.js";
 import User from "../models/User.js";
-import Role from "../models/Role.js";
+
 
 export const verifyToken = async (req, res, next) => {
   let token = req.headers["x-access-token"];
