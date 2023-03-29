@@ -29,7 +29,8 @@ export const signupHandler = async (req, res) => {
 
 export const signinHandler = async (req, res) => {
   try {
-
+    // Request body email can be an email or username
+    const userFound = await User.findOne({ email: req.body.email }).populate();
     if (!userFound) return res.status(400).json({ message: "User Not Found" });
 
     const matchPassword = await User.comparePassword(
